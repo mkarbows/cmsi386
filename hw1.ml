@@ -1,12 +1,15 @@
-(* Name:
-   Email:
-   Student ID:
+(* Name: Megan Karbowski
+   Email: mkarbows@lion.lmu.edu
+   Student ID: 944881048
 
    Others With Whom I Discussed Things:
    Josh Kuroda
 
    Other Resources I Consulted:
-   
+   Real World OCaml
+   http://caml.inria.fr/pub/docs/fpcl/fpcl-05.pdf
+   http://rigaux.org/language-study/syntax-across-languages-per-language/OCaml.html
+
 *)
 
 (* READ THIS FIRST!
@@ -58,11 +61,11 @@ exception TODO;;
 
 let change (n:int) : int list =
   (*raise TODO*)
-  (let w = n/25 in
-  let x = (n mod 25)/10 in 
-  let y = ((n mod 25) mod 10)/5 in
-  let z = (((n mod 25) mod 10) mod 5) in
-  [w;x;y;z])
+  (let quarters = n/25 in
+  let dimes = (n mod 25)/10 in 
+  let nickels = ((n mod 25) mod 10)/5 in
+  let pennies = (((n mod 25) mod 10) mod 5) in
+  [quarters;dimes;nickels;pennies])
 ;;
 
 (* Problem 2: Define a non-recursive function is_perm_123 that tests
@@ -78,6 +81,11 @@ let is_perm_123 (l : int list) : bool =
   (*raise TODO*)
   match l with
   | 1::(2::(3::[])) -> true
+  | 1::(3::(2::[])) -> true
+  | 2::(1::(3::[])) -> true
+  | 2::(1::(1::[])) -> true
+  | 3::(2::(1::[])) -> true
+  | 3::(1::(2::[])) -> true
   | _ -> false
 ;;
   
@@ -122,7 +130,14 @@ let string_of_digit (n:int) : string =
  *)
   
 let rec my_string_of_int (n:int) : string =
-  raise TODO
+  (*raise TODO*)
+  match n with
+  | _ when n >= 0 -> if n < 10 then string_of_digit n else 
+                      let x = n mod 10 in let s = string_of_digit x in
+                      let y = n/10 in let realS = my_string_of_int y in
+                      realS ^ s
+  | _ -> let x = n * (-1) in 
+          let y = my_string_of_int x in "-" ^ y
 ;;  
   
 (* Problem 5: Define a recursive function any that tests if a list of
@@ -138,9 +153,9 @@ let rec my_string_of_int (n:int) : string =
 let rec any (l : bool list) : bool =
   (*raise TODO*)
   match l with
-  | []      -> false
+  | []          -> false
   | (true::_)   -> true
-  | (hd::tl)    -> any tl;;
+  | (hd::tl)    -> any tl
 ;;       
 
 (* Problem 6: Define a recursive function all that tests if all
@@ -154,7 +169,12 @@ let rec any (l : bool list) : bool =
      all [true;true;false;true] = false
  *)
 let rec all (l : bool list) : bool =
-  raise TODO
+  (*raise TODO*)
+  match l with
+  | []  -> false
+  | (false::_)  -> false
+  | ([true])    -> true
+  | (hd::tl)    -> all tl
 ;;       
 
 (* Problem 7: Define a function that takes as input an int list, and
@@ -166,7 +186,10 @@ let rec all (l : bool list) : bool =
      add_last_2 [1;2;3] = [1;2;3;5]
  *)
 let rec add_last_2 (l : int list) : int list =
-  raise TODO
+  (*raise TODO*)
+  match l with 
+  | [x;y] -> [x;y;x+y]
+  | (hd::tl) -> let result = add_last_2 tl in hd::result
 ;;
 
 (* Problem 8: Use add_last_2 to define a function fibs that returns a
@@ -176,5 +199,10 @@ let rec add_last_2 (l : int list) : int list =
      fibs 5 = [0;1;1;2;3]
  *)  
 let rec fibs (n : int) : int list =
-  raise TODO
+  (*raise TODO*)
+  match n with
+  | 1 -> [0]
+  | 2 -> [0;1]
+  | 3 -> add_last_2 [0;1]
+  | n -> let x = fibs (n-1) in add_last_2 x
 ;;        
